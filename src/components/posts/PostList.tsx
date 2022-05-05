@@ -1,26 +1,47 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {PostItem} from './PostItem';
-
-const data = [
-    {
-        "userId": 1,
-        "id": 1,
-        "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-        "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-    },
-    {
-        "userId": 1,
-        "id": 2,
-        "title": "qui est esse",
-        "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
-    },
-  ]
+import {Pagination} from '@mui/material';
+import {getCountPage, getCurrentData} from '../../utils/utils';
+import {fetchPostsTC} from '../../store/reducers/posts-reducer';
+import {AppDispatch} from '../../store/store';
+import {selectorPosts} from '../../store/selectors/selectorPosts';
+import {useSelector} from 'react-redux';
+import {v1} from 'uuid';
 
 export const PostList = () => {
+    const [page, setPage] = useState<number>(1) // State для отображения текущей страницы
+    const [countPaginationItem] = useState(3) // State для отображения количества элементов на каждой странице
+    const data = useSelector(selectorPosts)
+    const dispatch = AppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchPostsTC())
+    }, [])
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value)
+    }
+
+    const currentData = getCurrentData(data, page, countPaginationItem)
+    const countPage = getCountPage(data, countPaginationItem)
+
     return (
         <div className={'post-list'}>
-            {data.map(p => <PostItem key={p.id} post={p}/>)}
+            {currentData.map(p => <PostItem key={v1()} post={p}/>)}
+            <div className={'paginate-wrapper'}>
+                <Pagination color={'secondary'}
+                            variant={'text'}
+                            size={'large'}
+                            count={countPage}
+                            page={page}
+                            onChange={handleChange}
+                            showFirstButton
+                            showLastButton
+                            siblingCount={0}
+                />
+            </div>
         </div>
     );
 };
+
 
