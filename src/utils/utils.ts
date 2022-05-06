@@ -16,3 +16,6 @@ export const getCountPage = (arr:IPost[], count: number) => {
 
     return pageNumbers
 }
+export const getRandomNumber = () => {
+    return Math.floor(Math.random() * (999 - 101 + 1) + 101)
+}

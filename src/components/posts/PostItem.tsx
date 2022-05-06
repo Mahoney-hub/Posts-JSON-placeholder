@@ -8,23 +8,23 @@ import {AppDispatch} from '../../store/store';
 import {EditableSpan} from '../EditableSpan';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import {removePostTC} from '../../store/reducers/posts-reducer';
+import {deletePostTextTC, removePostTC, updatePostTextTC, updatePostTitleTC} from '../../store/reducers/posts-reducer';
 
 interface PostItemPropsType {
     post: IPost
 }
 
 export const PostItem = ({post}: PostItemPropsType) => {
-    let [editMode, setEditMode] = useState(false)
+    let [editText, setEditText] = useState(false)
     let [editTitle, setEditTitle] = useState(false)
 
     const dispatch = AppDispatch()
 
-    const changePostText = (title: string) => {
-        // dispatch(updatePostTextTC(post.id, title))
+    const changePostText = (text: string) => {
+        dispatch(updatePostTextTC(post.id, text))
     }
     const changePostTitle = (title: string) => {
-        // dispatch(updatePostTextTC(post.id, title))
+        dispatch(updatePostTitleTC(post.id, title))
     }
 
     return (
@@ -34,7 +34,7 @@ export const PostItem = ({post}: PostItemPropsType) => {
                     {post.id}.
                     <EditableSpan value={post.title} onChange={changePostTitle} editMode={editTitle}
                                   setEditMode={setEditTitle}/>
-                    <IconButtonStyled>
+                    <IconButtonStyled onClick={() => setEditTitle(!editTitle)}>
                         <CreateIcon/>
                     </IconButtonStyled>
                     <IconButtonStyled onClick={() => dispatch(removePostTC(post.id))}>
@@ -43,13 +43,13 @@ export const PostItem = ({post}: PostItemPropsType) => {
                 </h2>
             </div>
             <div className={'post-text'}>
-                <EditableSpan value={post.body} onChange={changePostText} editMode={editMode}
-                              setEditMode={setEditMode}/>
+                <EditableSpan value={post.body} onChange={changePostText} editMode={editText}
+                              setEditMode={setEditText}/>
                 <div className={'toolbox'}>
-                    <IconBtnStyled onClick={() => setEditMode(!editMode)}>
+                    <IconBtnStyled onClick={() => setEditText(!editText)}>
                         <BorderColorIcon/>
                     </IconBtnStyled>
-                    <IconBtnStyled>
+                    <IconBtnStyled onClick={() => dispatch(deletePostTextTC(post.id))}>
                         <HighlightOffIcon/>
                     </IconBtnStyled>
                 </div>

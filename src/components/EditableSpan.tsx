@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ interface EditableSpanPropsType  {
     onChange: (newValue: string) => void
 }
 
-export const EditableSpan = ({value, onChange, editMode, setEditMode}: EditableSpanPropsType) => {
+export const EditableSpan = memo(({value, onChange, editMode, setEditMode}: EditableSpanPropsType) => {
     let [title, setTitle] = useState(value);
 
     const activateEditMode = () => {
@@ -39,7 +39,7 @@ export const EditableSpan = ({value, onChange, editMode, setEditMode}: EditableS
                            autoFocus
         />
         : <span>{value}</span>
-}
+})
 
 const TextFieldStyled = styled(TextField)`
 &&{

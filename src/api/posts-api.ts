@@ -1,10 +1,6 @@
 import axios from 'axios';
 import {IPost} from '../types/types';
 
-// const instance = axios.create({
-//     baseURL: 'https://jsonplaceholder.typicode.com/',
-// })
-
 // api
 export const postsAPI = {
     getPosts() {
@@ -19,17 +15,44 @@ export const postsAPI = {
             body: JSON.stringify({
                 title: `${title}`,
                 body: '',
-                userId: 1,
+                userId: 11,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         })
     },
-    // deletePostText(id: number) {
-    //     return instance.put<ResponseType>(`posts/${id}`)
-    // },
-    // updatePostText(id: number, title: string) {
-    //     return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`posts/${id}`, {title})
-    // }
+    updatePostTitle(id: number, newTitle: string) {
+        return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                title: newTitle,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+    },
+    updatePostText(id: number, newText: string) {
+    return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+            body: newText,
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+    },
+    deletePostText(id: number) {
+        return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                body: '',
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+    }
 }
